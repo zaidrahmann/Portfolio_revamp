@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f3ee;
+  --surface: #ede2d6;
+  --surface-soft: #efe4d8;
+  --surface-contrast: #e6d8c8;
+  --foreground: #2b2a28;
+  --muted: #474542;
+  --border: #d8c7b3;
+  --accent: #c97c5d;
+  --accent-hover: #b86b4b;
+  --accent-soft: #f2ded3;
+  --radius-card: 1rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-contrast: var(--surface-contrast);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    var(--font-geist-sans),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+  color: var(--foreground);
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.section-shell {
+  padding-block: 4.5rem;
+}
+
+.container-shell {
+  width: 100%;
+  max-width: 70rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.section-kicker {
+  font-size: 0.76rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.section-title {
+  font-size: clamp(1.65rem, 4.8vw, 2.35rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.section-copy {
+  color: var(--muted);
+  font-size: clamp(0.98rem, 2.8vw, 1.06rem);
+  line-height: 1.75;
+}
+
+.surface-card {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  box-shadow: 0 1px 2px rgb(43 42 40 / 0.05);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background-color: var(--surface-contrast);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+@media (min-width: 640px) {
+  .section-shell {
+    padding-block: 5.4rem;
+  }
+
+  .container-shell {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-shell {
+    padding-block: 6.2rem;
+  }
+
+  .container-shell {
+    padding-inline: 2rem;
+  }
+}
