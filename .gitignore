@@ -42,3 +42,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local AI/editor metadata (do not commit)
+.cursor/
+AGENTS.md
+CLAUDE.md
+agent-transcripts/
+/inspiration/

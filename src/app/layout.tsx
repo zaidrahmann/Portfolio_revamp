@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Calistoga, Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const calistoga = Calistoga({
+  variable: "--font-calistoga",
   subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
-  title: "Zaid Rehman — AI Engineer | Backend Engineer",
+  title: "Zaid Rehman — Junior AI Solutions Engineer | Backend Engineer",
   description:
-    "AI Engineer based in Dhaka with experience in LLM-powered automation and API-first backend system delivery.",
+    "Junior AI Solutions Engineer based in Dhaka with experience in LLM-powered automation and API-first backend system delivery.",
   keywords: [
-    "AI Engineer",
+    "Junior AI Solutions Engineer",
     "Backend Engineer",
     "RAG",
     "FastAPI",
@@ -26,9 +29,9 @@ export const metadata: Metadata = {
     "Zaid Rehman",
   ],
   openGraph: {
-    title: "Zaid Rehman — AI Engineer | Backend Engineer",
+    title: "Zaid Rehman — Junior AI Solutions Engineer | Backend Engineer",
     description:
-      "AI Engineer with 1 year of experience delivering LLM-powered automation and backend systems.",
+      "Junior AI Solutions Engineer with 1 year of experience delivering LLM-powered automation and backend systems.",
     type: "website",
   },
 };
@@ -42,9 +45,22 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} scroll-smooth`}
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} ${calistoga.variable} scroll-smooth`}
     >
       <body suppressHydrationWarning className="min-h-screen antialiased">
+        <Script id="theme-init" strategy="beforeInteractive">{`
+          (function () {
+            try {
+              var savedTheme = localStorage.getItem("theme");
+              var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+              var theme = savedTheme === "light" || savedTheme === "dark"
+                ? savedTheme
+                : (systemDark ? "dark" : "light");
+              document.documentElement.setAttribute("data-theme", theme);
+            } catch (e) {}
+          })();
+        `}</Script>
         {children}
       </body>
     </html>

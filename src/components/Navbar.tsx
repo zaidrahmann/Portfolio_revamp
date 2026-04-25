@@ -1,20 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 
 const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Research", href: "#publications" },
-  { label: "Contact", href: "#contact" },
+  { label: "home", href: "#home" },
+  { label: "projects", href: "#projects" },
+  { label: "publications", href: "#publications" },
+  { label: "contact", href: "#contact" },
 ];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -22,10 +21,39 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const rootTheme = document.documentElement.getAttribute("data-theme");
+    let nextTheme: "light" | "dark" | null = null;
+    if (rootTheme === "light" || rootTheme === "dark") {
+      nextTheme = rootTheme;
+    } else {
+      const storedTheme = localStorage.getItem("theme");
+      if (storedTheme === "light" || storedTheme === "dark") {
+        nextTheme = storedTheme;
+      }
+    }
+
+    if (!nextTheme || nextTheme === theme) {
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => {
+      setTheme(nextTheme);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+    document.documentElement.setAttribute("data-theme", nextTheme);
+    localStorage.setItem("theme", nextTheme);
+  };
+
   const handleNavClick = (href: string) => {
     setMenuOpen(false);
     const el = document.querySelector(href);
     if (el) {
+      window.history.replaceState(null, "", href);
       const offset = 72;
       const top =
         el.getBoundingClientRect().top + window.scrollY - offset;
@@ -35,52 +63,58 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-[var(--border)] bg-[var(--background)]/90 backdrop-blur-md"
-          : "bg-transparent"
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-[var(--background)]/75 backdrop-blur-sm" : "bg-[var(--background)]"
       }`}
     >
-      <nav className="container-shell h-16 flex items-center justify-between">
-        <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="text-base font-semibold tracking-tight text-[var(--foreground)] transition-colors hover:text-[var(--accent)]"
-        >
-          Zaid Rehman
-        </a>
-
-        <ul className="hidden items-center gap-7 md:flex">
+      <nav className="container-shell flex items-center justify-between py-5">
+        <ul className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
               <button
                 onClick={() => handleNavClick(link.href)}
-                className="cursor-pointer text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+                className="link-muted cursor-pointer text-base lowercase"
               >
                 {link.label}
               </button>
             </li>
           ))}
-          <li>
-            <a
-              href="/resume"
-              className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm text-[var(--foreground)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
-            >
-              Resume
-            </a>
-          </li>
         </ul>
 
-        <button
-          className="md:hidden p-2 text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        <div className="hidden items-center gap-3 md:flex">
+          <button
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+          >
+            {theme === "dark" ? (
+              <Sun size={16} className="text-amber-300" />
+            ) : (
+              <Moon size={16} className="text-[var(--accent)]" />
+            )}
+          </button>
+        </div>
+
+        <div className="flex items-center gap-1 md:hidden">
+          <button
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[var(--muted)] transition-colors"
+          >
+            {theme === "dark" ? (
+              <Sun size={18} className="text-amber-300" />
+            ) : (
+              <Moon size={18} className="text-[var(--accent)]" />
+            )}
+          </button>
+          <button
+            className="p-2 text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </nav>
 
       {menuOpen && (
@@ -90,7 +124,7 @@ export default function Navbar() {
                 <li key={link.href}>
                   <button
                     onClick={() => handleNavClick(link.href)}
-                    className="w-full rounded-xl px-3 py-3 text-left text-sm text-[var(--muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+                    className="w-full rounded-xl px-3 py-3 text-left text-sm lowercase text-[var(--muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
                   >
                     {link.label}
                   </button>
@@ -99,7 +133,7 @@ export default function Navbar() {
               <li className="pt-2">
                 <a
                   href="/resume"
-                  className="block rounded-xl bg-[var(--surface)] px-3 py-3 text-sm font-medium text-[var(--accent)] transition-colors hover:text-[var(--accent-hover)]"
+                  className="block rounded-xl bg-[var(--surface)] px-3 py-3 text-sm font-medium text-[var(--foreground)]"
                 >
                   Open Resume
                 </a>

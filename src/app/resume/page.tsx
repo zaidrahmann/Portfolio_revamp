@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const experience = [
   {
-    role: "AI Solutions Engineer (Intern)",
+    role: "Junior AI Solutions Engineer",
     company: "SJ Innovation",
     location: "Dhaka, Bangladesh",
     period: "Dec 2025 - Present",
@@ -66,6 +66,8 @@ const education = [
 const publications = [
   {
     title: "Modern Imaging and Learning Methods for Burn-Depth Assessment: A Structured Review",
+    authors:
+      "Atiya Siddika, Zaid Rehman, Md. Fahmidul Hoque, Mohammad Shamsul Arefin, Pranab Kumar Dhar",
     venue:
       "5th International Conference on Electrical, Computer & Telecommunication Engineering (ICECTE-26) - Track: AI and Machine Learning",
     status: "Accepted",
@@ -74,6 +76,8 @@ const publications = [
   {
     title:
       "Privacy-Aware Feature Envy Detection through Survey-Driven Federated Learning: Fed-MLP and Fed-Hybrid Architectures",
+    authors:
+      "Atiya Siddika, Zaid Rehman, Md. Fahmidul Hoque, Mohammad Shamsul Arefin, Pranab Kumar Dhar",
     venue:
       "5th International Conference on Electrical, Computer & Telecommunication Engineering (ICECTE-26) - Track: Software Engineering & Security",
     status: "Accepted",
@@ -82,6 +86,7 @@ const publications = [
   {
     title:
       "CAM-PoEm: Contour-Aware Mamba Bottleneck with Multi-Kernel Positional Embedding-based Encoder for Gastrointestinal Polyp Segmentation",
+    authors: "Fabliha Afaf Sarwar, Abdullah All Jilan, Zaid Rehman, Md Samin Rahman",
     venue:
       "CV4Clinical 2026: Computer Vision for Real-world Clinical Translation",
     status: "Under Review",
@@ -111,8 +116,8 @@ export default function ResumePage() {
             Back to Portfolio
           </Link>
           <a
-            href="/resume.pdf"
-            download="Zaid_Rehman_Resume.pdf"
+            href="/resume/Zaid_Rehman_CV.pdf"
+            download="Zaid_Rehman_CV.pdf"
             className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -129,7 +134,7 @@ export default function ResumePage() {
             Zaid Rehman
           </h1>
           <p className="mt-2 text-sm text-[var(--muted)] sm:text-base">
-            AI Engineer | Agentic AI Systems | Multi-Agent Orchestration | Dhaka, Bangladesh
+            Junior AI Solutions Engineer | Agentic AI Systems | Multi-Agent Orchestration | Dhaka, Bangladesh
           </p>
           <p className="mt-4 text-sm text-[var(--foreground)] sm:text-base">
             Phone: 01786448717 |{" "}
@@ -170,7 +175,7 @@ export default function ResumePage() {
         <section className="mt-6 surface-card p-6 sm:p-8">
           <p className="section-kicker mb-2">Summary</p>
           <p className="section-copy">
-            AI Engineer specializing in agentic AI systems and multi-agent orchestration for complex, high-stakes business workflows.
+            Junior AI Solutions Engineer specializing in agentic AI systems and multi-agent orchestration for complex, high-stakes business workflows.
             Experienced in architecting and deploying production-grade AI services by combining LLM agents, tool integration, and backend system design across distributed environments.
             Strong focus on scalable architecture, reliability engineering, and translating advanced AI capabilities into measurable operational outcomes.
           </p>
@@ -264,8 +269,11 @@ export default function ResumePage() {
                   )}
                 </p>
                 <p className="mt-1 text-sm text-[var(--muted)]">
-                  {publication.status} - {publication.venue}
+                  {publication.status === "Accepted"
+                    ? `Accepted at ${publication.venue}`
+                    : `Under Review at ${publication.venue}`}
                 </p>
+                <p className="mt-1 text-sm text-[var(--muted)]">{publication.authors}</p>
               </article>
             ))}
           </div>

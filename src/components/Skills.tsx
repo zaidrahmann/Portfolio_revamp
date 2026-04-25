@@ -109,15 +109,19 @@ export default function Skills() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {skillGroups.map((group) => (
-            <article key={group.category} className="surface-card p-5">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)]">
+            <article
+              key={group.category}
+              className="surface-card overflow-hidden p-5 pl-4"
+              style={{ borderLeft: "3px solid var(--accent)" }}
+            >
+              <h3 className="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--accent)]">
                 {group.category}
               </h3>
               <div className="mt-4 flex flex-wrap gap-2">
                 {group.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full border border-[var(--border)] bg-[var(--surface-contrast)] px-3 py-1.5 text-sm text-[var(--foreground)]"
+                    className="rounded-md bg-[var(--surface-contrast)] px-2.5 py-1 text-xs font-medium text-[var(--foreground)]"
                   >
                     {skill}
                   </span>

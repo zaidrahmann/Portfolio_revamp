@@ -1,37 +1,26 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { ExternalLink } from "lucide-react";
 
 interface Project {
   title: string;
-  problem: ReactNode;
-  solution: ReactNode;
-  impact: ReactNode;
+  description: string;
+  highlights: string[];
   tech: string[];
-  github: string;
+  source: string;
   demo?: string;
 }
 
 const projects: Project[] = [
   {
     title: "DocuMind-RAG",
-    problem:
-      "Internal teams needed trustworthy answers from long technical documents across multiple languages.",
-    solution: (
-      <>
-        Engineered a <strong>multilingual RAG system from scratch</strong> using
-        FAISS and sentence-transformers (no LangChain/LlamaIndex). Retrieval
-        optimized with{" "}
-        <strong>top-20 recall + top-5 cross-encoder reranking</strong>. Supports
-        HuggingFace Inference API and Ollama for hybrid deployment.
-      </>
-    ),
-    impact: (
-      <>
-        Shipped <strong>real-time document Q&A</strong> via a FastAPI REST API
-        and Gradio UI, with increased answer precision through reranking.
-      </>
-    ),
+    description:
+      "Multilingual Retrieval-Augmented Generation system for reliable long-document Q&A.",
+    highlights: [
+      "Built from scratch with Python, FAISS, and sentence-transformers without LangChain/LlamaIndex.",
+      "Improved answer precision using top-20 recall with top-5 cross-encoder reranking.",
+      "Shipped hybrid inference support with HuggingFace Inference API, Ollama, FastAPI, and Gradio.",
+    ],
     tech: [
       "Python",
       "FastAPI",
@@ -41,115 +30,80 @@ const projects: Project[] = [
       "Ollama",
       "Gradio",
     ],
-    github: "https://github.com/zaidrahmann/DocuMind-RAG",
+    source: "https://github.com/zaidrahmann/DocuMind-RAG",
   },
   {
     title: "Realtime Match Tracker",
-    problem:
-      "Sports users needed reliable real-time match updates without refresh friction.",
-    solution: (
-      <>
-        Built a full-stack platform with Node.js, PostgreSQL, Drizzle ORM, and
-        React 18. Hardened API reliability with{" "}
-        <strong>Zod schema validation</strong> and structured error handling.
-      </>
-    ),
-    impact: (
-      <>
-        Delivered <strong>low-latency live updates</strong> via resilient
-        WebSocket architecture with heartbeat checks, reconnection handling,
-        event broadcasting, and automated background job ingestion.
-      </>
-    ),
+    description:
+      "Full-stack real-time sports tracking platform with resilient WebSocket architecture.",
+    highlights: [
+      "Implemented end-to-end with Node.js, PostgreSQL, Drizzle ORM, and React 18.",
+      "Hardened API reliability using Zod validation and structured backend error handling.",
+      "Delivered low-latency updates via heartbeat checks, reconnection handling, and event broadcasting.",
+    ],
     tech: ["Node.js", "Express 5", "PostgreSQL", "Drizzle ORM", "React 18", "WebSockets", "Zod"],
-    github: "https://github.com/zaidrahmann/sportz-websockets",
+    source: "https://github.com/zaidrahmann/sportz-websockets",
   },
   {
     title: "FitHoba",
-    problem:
-      "Users needed personalized diet and workout planning instead of generic static fitness plans.",
-    solution:
-      "Developed a full-stack MERN app with profile and metric management APIs for structured user health data operations.",
-    impact: (
-      <>
-        Enabled <strong>dynamic recommendation generation</strong> through AI
-        integration using external LLM APIs driven by user health inputs.
-      </>
-    ),
+    description:
+      "AI-powered diet and workout planning app built on a MERN architecture.",
+    highlights: [
+      "Developed structured profile and metric management APIs for user health data.",
+      "Enabled dynamic recommendation generation through external LLM API integration.",
+      "Built full-stack user flows for personalized planning and goal-based progress tracking.",
+    ],
     tech: ["MongoDB", "Express", "React", "Node.js", "LLM APIs"],
-    github: "https://github.com/zaidrahmann/FitHoba",
+    source: "https://github.com/zaidrahmann/FitHoba",
   },
 ];
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <article className="surface-card flex h-full flex-col p-5 transition-shadow hover:shadow-sm sm:p-6">
-      <div className="mb-5">
-        <h3 className="text-lg font-semibold leading-tight text-[var(--foreground)]">
+    <article className="surface-card flex h-full flex-col p-5 sm:p-6">
+      <div>
+        <h3 className="title-serif text-2xl font-semibold leading-tight">
           {project.title}
         </h3>
+        <p className="mt-2 text-sm text-[var(--foreground)]/90">{project.description}</p>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <p className="text-xs uppercase tracking-[0.08em] text-[var(--muted)]">
-            Problem
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-[var(--foreground)]">
-            {project.problem}
-          </p>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-[0.08em] text-[var(--muted)]">
-            Solution
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-[var(--foreground)]">
-            {project.solution}
-          </p>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-[0.08em] text-[var(--muted)]">
-            Impact
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-[var(--foreground)]">
-            {project.impact}
-          </p>
-        </div>
-      </div>
+      <ul className="mt-3 space-y-1 text-xs leading-relaxed text-[var(--foreground)]/90">
+        {project.highlights.map((point) => (
+          <li key={point}>- {point}</li>
+        ))}
+      </ul>
 
-      <div className="mt-5 border-t border-[var(--border)]/90 pt-4">
-        <p className="text-xs uppercase tracking-[0.08em] text-[var(--muted)]">
-          Tech stack
-        </p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {project.tech.map((t) => (
-            <span
-              key={t}
-              className="rounded-full border border-[var(--border)] bg-[var(--surface-contrast)] px-3 py-1 text-xs text-[var(--muted)]"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {project.tech.map((t) => (
+          <span
+            key={t}
+            className="rounded-md bg-[var(--surface-contrast)] px-2 py-1 text-[11px] text-[var(--muted)]"
+          >
+            {t}
+          </span>
+        ))}
       </div>
 
       <div className="mt-5 flex items-center gap-3">
         <a
-          href={project.github}
+          href={project.source}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full border border-[var(--border)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          className="link-muted inline-flex items-center gap-1 text-sm font-medium"
         >
-          GitHub
+          Source
+          <ExternalLink size={14} />
         </a>
         {project.demo && (
           <a
             href={project.demo}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full bg-[var(--accent-soft)] px-3 py-1.5 text-xs font-medium text-[var(--accent)] transition-colors hover:bg-[var(--surface-contrast)]"
+            className="link-muted inline-flex items-center gap-1 text-sm font-medium"
           >
             Live Demo
+            <ExternalLink size={14} />
           </a>
         )}
       </div>
@@ -159,20 +113,19 @@ function ProjectCard({ project }: { project: Project }) {
 
 export default function Projects() {
   return (
-    <section id="projects" className="section-shell border-t border-[var(--border)]/80">
+    <section id="projects" className="section-shell">
       <div className="container-shell">
-        <div className="mb-12">
-          <p className="section-kicker mb-3">Projects</p>
-          <h2 className="section-title">
-            Selected work that solves real product problems.
-          </h2>
-          <p className="section-copy mt-4 max-w-2xl">
-            A focused set of projects where I owned architecture, shipped
-            product decisions, and improved outcomes through thoughtful
-            engineering.
-          </p>
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="title-serif text-2xl sm:text-3xl">featured projects</h2>
+          <a
+            href="https://github.com/zaidrahmann?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-muted text-sm"
+          >
+            view more
+          </a>
         </div>
-
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {projects.map((project) => (
             <ProjectCard key={project.title} project={project} />

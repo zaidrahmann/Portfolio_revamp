@@ -1,82 +1,228 @@
-import type { ReactNode } from "react";
+"use client";
 
-interface ExperienceItem {
-  role: string;
-  company: string;
+import { useState } from "react";
+
+interface TimelineItem {
+  title: string;
+  subtitle: string;
   period: string;
-  bullets: ReactNode[];
+  points: string[];
 }
 
-const experiences: ExperienceItem[] = [
+interface WorkPosition {
+  title: string;
+  start: string;
+  end?: string;
+  description: string[];
+}
+
+interface WorkCompany {
+  name: string;
+  subtitle: string;
+  href?: string;
+  logoSrc?: string;
+  logo: string;
+  positions: WorkPosition[];
+}
+
+const workItems: WorkCompany[] = [
   {
-    role: "AI Solutions Engineer (Intern)",
-    company: "SJ Innovation",
-    period: "Dec 2025 – Present",
-    bullets: [
-      <>Reduced CollabAI (enterprise AI platform) LLM API spend by <strong>20–35%</strong> through token-efficiency design using context compression, model routing, memory distillation, and client-side LRU prompt caching.</>,
-      <>Delivered <strong>zero-cost responses</strong> for repeated prompts through cache-hit execution using in-memory retention for identical and near-identical requests.</>,
-      <>Accelerated workflows by <strong>up to 60%</strong> through agentic automation using n8n, webhooks, and custom REST APIs, with reliability reinforced by multi-agent validation and structured error handling.</>,
+    name: "SJ Innovation",
+    subtitle: "Dhaka, Bangladesh",
+    href: "https://sjinnovation.com/",
+    logoSrc: "https://www.google.com/s2/favicons?domain=sjinnovation.com&sz=128",
+    logo: "SJ",
+    positions: [
+      {
+        title: "Junior AI Solutions Engineer",
+        start: "Dec 2025",
+        end: "Present",
+        description: [
+          "Reduced CollabAI (enterprise AI platform) LLM API spend by 20-35% through token-efficiency design using context compression, model routing, memory distillation, and client-side LRU prompt caching.",
+          "Delivered zero-cost responses for repeated prompts through cache-hit execution using in-memory retention for identical and near-identical requests.",
+          "Accelerated workflows by up to 60% through agentic automation using n8n, webhooks, and custom REST APIs, with reliability reinforced by multi-agent validation and structured error handling.",
+        ],
+      },
     ],
   },
   {
-    role: "Research Assistant",
-    company: "Center for Intelligent Computing (CIC)",
-    period: "Jul 2025 – Dec 2025",
-    bullets: [
-      <>Collaborated under Prof. Dr. Mohammad Shamsul Arefin (Former Dean, CUET; President, Bangladesh Computer Society) on multi-track research and publication operations.</>,
-      <>Produced <strong>200+ publication-ready chapters</strong> across <strong>7 international volumes</strong> through end-to-end LaTeX workflows for Taylor &amp; Francis and Springer.</>,
-      <>Increased submission throughput through manuscript pipeline automation using metadata tracking, reference validation, and conference packaging for AI research papers.</>,
+    name: "Center for Intelligent Computing (CIC)",
+    subtitle: "Chattogram, Bangladesh",
+    logoSrc: "/cic.jpg",
+    logo: "CIC",
+    positions: [
+      {
+        title: "Research Assistant",
+        start: "Jul 2025",
+        end: "Dec 2025",
+        description: [
+          "Collaborated under Prof. Dr. Mohammad Shamsul Arefin (Former Dean, CUET; President, Bangladesh Computer Society) on multi-track research and publication operations.",
+          "Produced 200+ publication-ready chapters across 7 international volumes through end-to-end LaTeX workflows for Taylor & Francis and Springer.",
+          "Increased submission throughput through manuscript pipeline automation using metadata tracking, reference validation, and conference packaging for AI research papers.",
+        ],
+      },
     ],
   },
 ];
 
-function ExperienceCard({ item }: { item: ExperienceItem }) {
+const educationItems: TimelineItem[] = [
+  {
+    title: "BRAC University",
+    subtitle: "BSc in Computer Science · Dhaka, Bangladesh",
+    period: "Jun 2021 - Jun 2025",
+    points: [
+      "Concentrations in intelligence and modeling/simulations.",
+      "GPA 3.53/4.00 with Dean's List distinction.",
+    ],
+  },
+  {
+    title: "Chattogram Cantonment Public College",
+    subtitle: "Higher Secondary Certificate · Chattogram, Bangladesh",
+    period: "2020",
+    points: ["Graduated with 5.00/5.00 in science track."],
+  },
+];
+
+function TimelineCard({ item }: { item: TimelineItem }) {
   return (
-    <div className="relative pl-6 sm:pl-8">
-      <span className="absolute left-0 top-2.5 h-2.5 w-2.5 -translate-x-1/2 rounded-full border border-[var(--accent)] bg-[var(--background)]" />
-      <div className="surface-card px-4 pb-5 pt-4 sm:px-5">
-        <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-          <h3 className="text-base font-semibold text-[var(--foreground)]">
-            {item.role}
-          </h3>
-          <p className="text-xs text-[var(--muted)]">{item.period}</p>
+    <article className="surface-card rounded-2xl px-5 py-5 sm:px-6">
+      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h3 className="text-lg font-semibold text-foreground">{item.title}</h3>
+          <p className="text-sm text-muted">{item.subtitle}</p>
         </div>
-        <p className="text-sm font-medium text-[var(--accent)]">{item.company}</p>
-        <ul className="mt-2 space-y-2">
-          {item.bullets.map((b, i) => (
-            <li
-              key={i}
-              className="flex items-start gap-2 text-sm leading-relaxed text-[var(--foreground)]"
-            >
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" />
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
+        <p className="text-sm text-muted">{item.period}</p>
       </div>
+      <ul className="mt-3 space-y-2 text-sm leading-relaxed text-foreground">
+        {item.points.map((point) => (
+          <li key={point}>- {point}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+function WorkCard({ item }: { item: WorkCompany }) {
+  const logoBadge = (
+    <>
+      {item.logoSrc ? (
+        <img
+          src={item.logoSrc}
+          alt={`${item.name} logo`}
+          className="h-9 w-9 rounded-full object-contain"
+          loading="lazy"
+        />
+      ) : (
+        item.logo
+      )}
+    </>
+  );
+
+  return (
+    <div className="relative flex gap-4 sm:gap-5">
+      {item.href ? (
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${item.name} website`}
+          className="relative z-1 mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-background text-xs font-semibold text-foreground transition-colors hover:border-accent"
+        >
+          {logoBadge}
+        </a>
+      ) : (
+        <div className="relative z-1 mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-background text-xs font-semibold text-foreground">
+          {logoBadge}
+        </div>
+      )}
+
+      <article className="min-w-0 flex-1">
+        <div className="flex flex-col gap-1">
+          {item.href ? (
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-fit text-2xl font-semibold leading-tight text-foreground transition-colors hover:text-accent"
+            >
+              {item.name}
+            </a>
+          ) : (
+            <h3 className="text-2xl font-semibold leading-tight text-foreground">{item.name}</h3>
+          )}
+          <p className="text-sm text-muted">{item.subtitle}</p>
+        </div>
+
+        <div className="mt-3 space-y-4">
+          {item.positions.map((position) => (
+            <div key={`${item.name}-${position.title}`} className="space-y-2">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                <p className="font-semibold text-foreground">{position.title}</p>
+                <p className="text-sm text-muted">
+                  {position.start} - {position.end ?? "Present"}
+                </p>
+              </div>
+              <ul className="space-y-2 text-sm leading-relaxed text-foreground">
+                {position.description.map((point) => (
+                  <li key={point}>- {point}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </article>
     </div>
   );
 }
 
-export default function Experience() {
+function WorkTimeline() {
   return (
-    <section id="experience" className="section-shell border-t border-[var(--border)]/80">
+    <article className="surface-card rounded-2xl px-5 py-5 sm:px-6">
+      <div className="relative">
+        <div className="absolute bottom-2 left-6 top-2 w-px bg-border" aria-hidden />
+        <div className="space-y-8">
+          {workItems.map((item) => (
+            <WorkCard key={item.name} item={item} />
+          ))}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export default function Experience() {
+  const [activeTab, setActiveTab] = useState<"work" | "education">("work");
+
+  return (
+    <section id="experience" className="section-shell">
       <div className="container-shell">
-        <div className="mb-12">
-          <p className="section-kicker mb-3">Experience</p>
-          <h2 className="section-title">
-            Professional experience focused on measurable impact.
-          </h2>
-          <p className="section-copy mt-4 max-w-2xl">
-            A concise timeline of roles where I improved speed, reliability, and
-            product outcomes.
-          </p>
+        <div className="rounded-xl border border-border bg-(--surface-soft) p-1">
+          <div className="grid grid-cols-2 gap-1">
+            <button
+              onClick={() => setActiveTab("work")}
+              className={`rounded-lg px-4 py-2 text-lg font-medium transition ${
+                activeTab === "work" ? "bg-background text-foreground" : "text-muted"
+              }`}
+            >
+              Work
+            </button>
+            <button
+              onClick={() => setActiveTab("education")}
+              className={`rounded-lg px-4 py-2 text-lg font-medium transition ${
+                activeTab === "education" ? "bg-background text-foreground" : "text-muted"
+              }`}
+            >
+              Education
+            </button>
+          </div>
         </div>
 
-        <div className="relative ml-1 max-w-3xl space-y-4 border-l border-[var(--border)]">
-          {experiences.map((item) => (
-            <ExperienceCard key={item.role} item={item} />
-          ))}
+        <div className="mt-4 space-y-4">
+          {activeTab === "work" ? (
+            <WorkTimeline />
+          ) : (
+            educationItems.map((item) => <TimelineCard key={item.title} item={item} />)
+          )}
         </div>
       </div>
     </section>
